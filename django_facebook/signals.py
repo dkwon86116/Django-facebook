@@ -8,7 +8,7 @@ facebook_user_registered = Signal(providing_args=['user', 'facebook_data'])
 facebook_pre_update = Signal(
     providing_args=['user', 'profile', 'facebook_data'])
 facebook_post_update = Signal(
-    providing_args=['user', 'profile', 'facebook_data'])
+    providing_args=['facebook', 'user', 'profile', 'facebook_data'])
 
 # Sent after storing the friends from graph to db
 facebook_post_store_friends = Signal(

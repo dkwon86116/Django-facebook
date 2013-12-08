@@ -894,7 +894,8 @@ class OpenFacebook(FacebookConnection):
         api_base_url = self.old_api_url if old_api else self.api_url
         if getattr(self, 'access_token', None):
             params['access_token'] = self.access_token
-        url = '%s%s?%s' % (api_base_url, path, urllib.urlencode(params))
+        locale = "locale=ko_KR"
+        url = '%s%s?%s&%s' % (api_base_url, path, locale, urllib.urlencode(params))
         logger.info('requesting url %s', url)
         response = self._request(url, post_data)
         return response

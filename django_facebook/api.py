@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.forms.util import ValidationError
 from django_facebook import settings as facebook_settings, signals
 from django_facebook.exceptions import FacebookException
@@ -318,9 +320,9 @@ class FacebookUserConverter(object):
 
         gender = profile.get('gender', None)
 
-        if gender == 'male':
+        if gender == u'남자' or gender == u'남자 (hidden)':
             user_data['gender'] = 'm'
-        elif gender == 'female':
+        elif gender == u'여자'or gender == u'여자 (hidden)':
             user_data['gender'] = 'f'
 
         user_data['username'] = cls._retrieve_facebook_username(user_data)
@@ -600,7 +602,8 @@ class FacebookUserConverter(object):
         friends = getattr(self, '_friends', None)
         if friends is None:
             friends_response = self.open_facebook.fql(
-                "SELECT uid, name, sex FROM user WHERE uid IN (SELECT uid2 "
+                "SELECT uid, name, sex, birthday_date, relationship_status, current_location "
+                "FROM user WHERE uid IN (SELECT uid2 "
                 "FROM friend WHERE uid1 = me()) LIMIT %s" % limit)
             # friends_response = self.open_facebook.get('me/friends',
             #                                           limit=limit)
@@ -642,14 +645,15 @@ class FacebookUserConverter(object):
 
             global_defaults = dict(user_id=user.id)
             default_dict = {}
-            gender_map = dict(female='F', male='M')
-            gender_map['male (hidden)'] = 'M'
-            gender_map['female (hidden)'] = 'F'
+            gender_map = dict(female='F', male='M', )
             for f in friends:
                 name = f.get('name')
                 gender = None
-                if f.get('sex'):
-                    gender = gender_map[f.get('sex')]
+                sex = f.get('sex')
+                if sex == u'남자' or sex == u'남자 (hidden)':
+                    gender = 'M'
+                elif sex == u'여자' or sex == u'여자 (hidden)':
+                    gender = 'F'
                 default_dict[str(f['id'])] = dict(name=name, gender=gender)
             id_field = 'facebook_id'
 

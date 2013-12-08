@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
 from django.core.files.temp import NamedTemporaryFile
@@ -359,7 +361,7 @@ def _update_user(user, facebook, overwrite=True):
     if getattr(profile, '_fb_is_dirty', False):
         profile.save()
 
-    signals.facebook_post_update.send(sender=get_user_model(),
+    signals.facebook_post_update.send(sender=get_user_model(), facebook=facebook,
                                       user=user, profile=profile, facebook_data=facebook_data)
 
     return user
