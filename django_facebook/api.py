@@ -322,7 +322,7 @@ class FacebookUserConverter(object):
 
         if gender == u'남자' or gender == u'남자 (hidden)':
             user_data['gender'] = 'm'
-        elif gender == u'여자'or gender == u'여자 (hidden)':
+        elif gender == u'여자' or gender == u'여자 (hidden)':
             user_data['gender'] = 'f'
 
         user_data['username'] = cls._retrieve_facebook_username(user_data)
@@ -602,9 +602,9 @@ class FacebookUserConverter(object):
         friends = getattr(self, '_friends', None)
         if friends is None:
             friends_response = self.open_facebook.fql(
-                "SELECT uid, name, sex, birthday_date, relationship_status, current_location "
-                "FROM user WHERE uid IN (SELECT uid2 "
-                "FROM friend WHERE uid1 = me()) LIMIT %s" % limit)
+                "SELECT uid, name, sex, birthday_date, relationship_status, "
+                "friend_count, current_location FROM user WHERE uid IN "
+                "(SELECT uid2 FROM friend WHERE uid1 = me()) LIMIT %s" % limit)
             # friends_response = self.open_facebook.get('me/friends',
             #                                           limit=limit)
             # friends = friends_response and friends_response.get('data')
@@ -645,7 +645,7 @@ class FacebookUserConverter(object):
 
             global_defaults = dict(user_id=user.id)
             default_dict = {}
-            gender_map = dict(female='F', male='M', )
+            gender_map = dict(female='F', male='M')
             for f in friends:
                 name = f.get('name')
                 gender = None
