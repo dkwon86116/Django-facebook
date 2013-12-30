@@ -75,6 +75,11 @@ def _connect(request, graph):
 
         logger.info('Facebook is authenticated')
         facebook_data = converter.facebook_profile_data()
+
+        stop = check_invitation_or_user(request, converter)
+        if stop:
+            return HttpResponseRedirect('/?invite=false')
+
         # either, login register or connect the user
         try:
             action, user = connect_user(
