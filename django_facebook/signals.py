@@ -2,7 +2,7 @@ from django.dispatch import Signal
 
 
 # Sent right after user is created
-facebook_user_registered = Signal(providing_args=['user', 'facebook_data'])
+facebook_user_registered = Signal(providing_args=['user', 'facebook_data', 'request'])
 
 # Sent after user is created, before profile is updated with data from Facebook
 facebook_pre_update = Signal(

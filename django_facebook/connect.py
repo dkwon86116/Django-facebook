@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
 from django.core.files.temp import NamedTemporaryFile
