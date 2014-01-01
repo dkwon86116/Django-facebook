@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 '''
 
+Open Facebook - Pythonic access to the open graph
+=================================================
+
 Open Facebook allows you to use Facebook's open graph API with simple python code
 
-**Features**
+**Features**:
 
-    * Supported and maintained
-    * Tested so people can contribute
-    * Facebook exceptions are mapped
-    * Logging
+* Supported and maintained
+* Tested so people can contribute
+* Facebook exceptions are mapped
+* Logging
 
 
 **Basic examples**::
@@ -499,8 +502,8 @@ class FacebookAuthorization(FacebookConnection):
         response = cls.request('oauth/access_token', **kwargs)
         return response['access_token']
 
-    @memoized
     @classmethod
+    @memoized
     def get_cached_app_access_token(cls):
         '''
         Caches the access token in memory, good for speeding up testing
@@ -873,7 +876,7 @@ class OpenFacebook(FacebookConnection):
                 has_permissions = False
         return has_permissions
 
-    def my_image_url(self, size='large'):
+    def my_image_url(self, size=None):
         '''
         Returns the image url from your profile
         Shortcut for me/picture
@@ -884,7 +887,8 @@ class OpenFacebook(FacebookConnection):
         :returns: string
         '''
         query_dict = QueryDict('', True)
-        query_dict['type'] = size
+        if size:
+            query_dict['type'] = size
         query_dict['access_token'] = self.access_token
 
         url = '%sme/picture?%s' % (self.api_url, query_dict.urlencode())
@@ -894,12 +898,11 @@ class OpenFacebook(FacebookConnection):
         api_base_url = self.old_api_url if old_api else self.api_url
         if getattr(self, 'access_token', None):
             params['access_token'] = self.access_token
-        locale = "locale=ko_KR"
-        url = '%s%s?%s&%s' % (api_base_url, path, locale, urllib.urlencode(params))
+        locale = 'locale=ko_KR'
+        url = '%s%s?%s&%s' % (api_base_url, path, urllib.urlencode(params), locale)
         logger.info('requesting url %s', url)
         response = self._request(url, post_data)
         return response
-
 
 class TestUser(object):
 

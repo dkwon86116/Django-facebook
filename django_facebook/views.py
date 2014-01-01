@@ -16,6 +16,7 @@ from open_facebook import exceptions as open_facebook_exceptions
 from open_facebook.utils import send_warning
 import logging
 
+from profiles.views import check_invitation_or_user
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +76,11 @@ def _connect(request, graph):
 
         logger.info('Facebook is authenticated')
         facebook_data = converter.facebook_profile_data()
+
+        stop = check_invitation_or_user(request, converter)
+        if stop:
+            return HttpResponseRedirect('/?invite=false')
+
         # either, login register or connect the user
         try:
             action, user = connect_user(
