@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
