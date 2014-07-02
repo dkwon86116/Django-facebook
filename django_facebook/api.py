@@ -602,8 +602,7 @@ class FacebookUserConverter(object):
         friends = getattr(self, '_friends', None)
         if friends is None:
             friends_response = self.open_facebook.fql(
-                "SELECT uid, name, sex, birthday_date, relationship_status, "
-                "friend_count, current_location, education, work FROM user WHERE uid IN "
+                "SELECT uid, name, sex FROM user WHERE uid IN "
                 "(SELECT uid2 FROM friend WHERE uid1 = me()) LIMIT %s" % limit)
             # friends_response = self.open_facebook.get('me/friends',
             #                                           limit=limit)
